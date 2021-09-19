@@ -8,9 +8,6 @@ function Header() {
         <NavLink exact activeClassName="selected" className="nav-link" to="/">
           Home
         </NavLink>
-        <NavLink exact activeClassName="selected" className="nav-link" to="/about">
-          About
-        </NavLink>
       </nav>
     </header>
   );
