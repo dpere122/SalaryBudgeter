@@ -1,6 +1,6 @@
 .box{
     border: 2px solid white;
-    width: 30%;
+    // width: 30%;
     height: auto;
     text-align: start;
     padding: 10px;
@@ -8,13 +8,22 @@
 .expense{
     margin: 3px;
     padding: 5px;
-    background-color: whitesmoke;
-    .col{
-        padding: 0px;
-    }
-    .col p{
+    background-color: grey;
+    border-color: black;
+    *{
         color: black;
+        padding: 0px;
         margin: 0px;
     }
 }
-
+.delete{
+    background-color:whitesmoke;
+    border-color: black;
+}
+.delete:hover{
+    background-color: lightgrey;
+    border-color: red;
+    path{
+        color:red;
+    }
+}

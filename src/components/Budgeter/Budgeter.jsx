@@ -1,17 +1,22 @@
 /* eslint-disable no-console */
-import Button from "@restart/ui/esm/Button";
 import { useState } from "react";
-// import { Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import { X } from "react-bootstrap-icons";
 import "./Budgeter.scss";
 
-function Expense({ expense }) {
+function Expense({ expense, index, removeExpense }) {
   return (
     <div className="row expense rounded">
-      <div className="col">
+      <div className="col-6">
         <p>{expense.name}</p>
       </div>
-      <div className="col">
+      <div className="col-3">
         <p>{expense.cost}</p>
+      </div>
+      <div className="col">
+        <Button className="delete" onClick={() => removeExpense(index)}>
+          <X size={25}></X>
+        </Button>
       </div>
     </div>
   );
@@ -19,7 +24,7 @@ function Expense({ expense }) {
 
 function ExpenseForm({ addExpense }) {
   const [name, setName] = useState("");
-  const [cost, setCost] = useState(0);
+  const [cost, setCost] = useState();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(cost);
@@ -29,25 +34,37 @@ function ExpenseForm({ addExpense }) {
     setCost(0);
   };
   const textInput = {
-    width: "10ch",
+    width: "15ch",
     borderRadius: "5px",
     margin: "2px",
   };
   return (
     <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        style={textInput}
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="text"
-        style={textInput}
-        value={cost}
-        onChange={(e) => setCost(e.target.value)}
-      />
-      <Button type="submit">ADD</Button>
+      <div className="row">
+        <div className="col">
+          <p className="m-0">Name</p>
+          <input
+            type="text"
+            style={textInput}
+            value={name}
+            placeholder="Groceries"
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="col">
+          <p className="m-0">Cost</p>
+          <input
+            type="text"
+            style={textInput}
+            value={cost}
+            onChange={(e) => setCost(e.target.value)}
+          />
+        </div>
+        <div className="col">
+          <br />
+          <Button type="submit">ADD</Button>
+        </div>
+      </div>
     </form>
   );
 }
@@ -55,11 +72,7 @@ function ExpenseForm({ addExpense }) {
 function Budgeter() {
   const [salary, setSalary] = useState(0);
 
-  // const [exp, setExp] = useState({name:"", cost:0});
-  const [expenses, setExpenses] = useState([
-    { name: "Food", cost: 100 },
-    { name: "Entertainment", cost: 250 },
-  ]);
+  const [expenses, setExpenses] = useState([]);
 
   const handleChange = (e) => {
     setSalary(e.target.value);
@@ -67,6 +80,12 @@ function Budgeter() {
   const addExpense = (name, cost) => {
     const newExpense = [...expenses, { name, cost }];
     setExpenses(newExpense);
+  };
+  const removeExpense = (index) => {
+    // in react you have to create an entirely new list when adding a new item
+    const newExpenses = [...expenses];
+    newExpenses.splice(index, 1);
+    setExpenses(newExpenses);
   };
 
   return (
@@ -96,7 +115,7 @@ function Budgeter() {
             </div>
             {/* Expenses */}
             <div className="col">
-              <h4>LeftOver</h4>
+              <h4>After Expenses</h4>
               <p>Yearly Salary: {salary}</p>
               <p>Monthly Salary: {(salary / 12).toFixed(2)}</p>
               <p>Weekly Salary: {(salary / 52).toFixed(2)}</p>
@@ -104,8 +123,21 @@ function Budgeter() {
           </div>
           <hr />
           <div>
+            <div className="row">
+              <div className="col">
+                <h2>Expenses:</h2>
+              </div>
+              {/* <div className="col">
+                <p>{totalExpenses}</p>
+              </div> */}
+            </div>
             {expenses.map((expense, index) => (
-              <Expense key={index} index={index} expense={expense} />
+              <Expense
+                key={index}
+                index={index}
+                expense={expense}
+                removeExpense={removeExpense}
+              />
             ))}
           </div>
           <div className="row">
