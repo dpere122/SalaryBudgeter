@@ -5,3 +5,16 @@
     text-align: start;
     padding: 10px;
 }
+.expense{
+    margin: 3px;
+    padding: 5px;
+    background-color: whitesmoke;
+    .col{
+        padding: 0px;
+    }
+    .col p{
+        color: black;
+        margin: 0px;
+    }
+}
+

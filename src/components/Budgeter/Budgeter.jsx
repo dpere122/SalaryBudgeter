@@ -1,40 +1,74 @@
 /* eslint-disable no-console */
+import Button from "@restart/ui/esm/Button";
 import { useState } from "react";
 // import { Button } from "react-bootstrap";
 import "./Budgeter.scss";
 
+function Expense({ expense }) {
+  return (
+    <div className="row expense rounded">
+      <div className="col">
+        <p>{expense.name}</p>
+      </div>
+      <div className="col">
+        <p>{expense.cost}</p>
+      </div>
+    </div>
+  );
+}
+
+function ExpenseForm({ addExpense }) {
+  const [name, setName] = useState("");
+  const [cost, setCost] = useState(0);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(cost);
+    if (!name) return;
+    addExpense(name, cost);
+    setName("");
+    setCost(0);
+  };
+  const textInput = {
+    width: "10ch",
+    borderRadius: "5px",
+    margin: "2px",
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        style={textInput}
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="text"
+        style={textInput}
+        value={cost}
+        onChange={(e) => setCost(e.target.value)}
+      />
+      <Button type="submit">ADD</Button>
+    </form>
+  );
+}
+
 function Budgeter() {
-  // let expenses = [];
   const [salary, setSalary] = useState(0);
-  // const [expName, setName] = useState("");
-  // const [expCost, setExpCost] = useState(0);
+
+  // const [exp, setExp] = useState({name:"", cost:0});
+  const [expenses, setExpenses] = useState([
+    { name: "Food", cost: 100 },
+    { name: "Entertainment", cost: 250 },
+  ]);
 
   const handleChange = (e) => {
     setSalary(e.target.value);
   };
-
-  // Create Expense list through a different component
-  // const changeName = (e) => {
-  //   setName(e.target.value);
-  // };
-  // const changeCost = (e) => {
-  //   setExpCost(e.target.value);
-  // };
-  // const newExpense = () => {
-  //   let nExp = {
-  //     name: expName,
-  //     cost: expCost,
-  //   };
-  //   expenses.push(nExp);
-  //   console.log(expenses);
-  // };
-
-  // eslint-disable-next-line no-unused-vars
-  const textInput = {
-    width: "20ch",
-    borderRadius: "15px",
-    margin: "2px",
+  const addExpense = (name, cost) => {
+    const newExpense = [...expenses, { name, cost }];
+    setExpenses(newExpense);
   };
+
   return (
     <>
       <div className="d-flex justify-content-center">
@@ -57,43 +91,26 @@ function Budgeter() {
             <div className="col">
               <h4>Total</h4>
               <p>Yearly Salary: {salary}</p>
-              <p>Monthly Salary: {Math.floor(salary / 12)}</p>
-              <p>Weekly Salary: {Math.floor(salary / 52)}</p>
+              <p>Monthly Salary: {(salary / 12).toFixed(2)}</p>
+              <p>Weekly Salary: {(salary / 52).toFixed(2)}</p>
             </div>
             {/* Expenses */}
             <div className="col">
               <h4>LeftOver</h4>
               <p>Yearly Salary: {salary}</p>
-              <p>Monthly Salary: {Math.floor(salary / 12)}</p>
-              <p>Weekly Salary: {Math.floor(salary / 52)}</p>
+              <p>Monthly Salary: {(salary / 12).toFixed(2)}</p>
+              <p>Weekly Salary: {(salary / 52).toFixed(2)}</p>
             </div>
           </div>
           <hr />
-          {/* <div className="row">
-            <div className="col">
-              <h4>Expenses: </h4>
-              <label htmlFor="expName"> Name: </label>
-              <input
-                type="text"
-                name="expName"
-                value={expName}
-                style={textInput}
-                onChange={changeName}
-              />
-              <label htmlFor="exp"> Cost: </label>
-              <input
-                type="text"
-                name="exp"
-                value={expCost}
-                style={textInput}
-                onChange={changeCost}
-              />
-              <Button onClick={newExpense}>Add</Button>
-            </div>
+          <div>
+            {expenses.map((expense, index) => (
+              <Expense key={index} index={index} expense={expense} />
+            ))}
           </div>
           <div className="row">
-            <div className="col">{expenses}</div>
-          </div> */}
+            <ExpenseForm addExpense={addExpense} />
+          </div>
         </div>
       </div>
     </>
