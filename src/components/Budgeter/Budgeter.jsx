@@ -70,7 +70,7 @@ function ExpenseForm({ addExpense }) {
 
 function Budgeter() {
   const [totalExpenses, setTotal] = useState(0);
-  const [salary, setSalary] = useState(0);
+  const [salary, setSalary] = useState("");
 
   const [expenses, setExpenses] = useState([]);
 
