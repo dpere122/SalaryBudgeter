@@ -24,14 +24,13 @@ function Expense({ expense, index, removeExpense }) {
 
 function ExpenseForm({ addExpense }) {
   const [name, setName] = useState("");
-  const [cost, setCost] = useState();
+  const [cost, setCost] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(cost);
     if (!name) return;
     addExpense(name, cost);
     setName("");
-    setCost(0);
+    setCost("");
   };
   const textInput = {
     width: "15ch",
@@ -70,6 +69,7 @@ function ExpenseForm({ addExpense }) {
 }
 
 function Budgeter() {
+  const [totalExpenses, setTotal] = useState(0);
   const [salary, setSalary] = useState(0);
 
   const [expenses, setExpenses] = useState([]);
@@ -78,12 +78,20 @@ function Budgeter() {
     setSalary(e.target.value);
   };
   const addExpense = (name, cost) => {
-    const newExpense = [...expenses, { name, cost }];
-    setExpenses(newExpense);
+    // validate for numbers only
+    let nCost = parseFloat(cost);
+    if (!isNaN(nCost)) {
+      const newExpense = [...expenses, { name, cost }];
+      setTotal(totalExpenses + nCost);
+      setExpenses(newExpense);
+    } else {
+      alert("Please enter a valid number");
+    }
   };
   const removeExpense = (index) => {
     // in react you have to create an entirely new list when adding a new item
     const newExpenses = [...expenses];
+    setTotal(totalExpenses - parseFloat(newExpenses[index].cost));
     newExpenses.splice(index, 1);
     setExpenses(newExpenses);
   };
@@ -127,9 +135,9 @@ function Budgeter() {
               <div className="col">
                 <h2>Expenses:</h2>
               </div>
-              {/* <div className="col">
-                <p>{totalExpenses}</p>
-              </div> */}
+              <div className="col">
+                <p>{totalExpenses.toFixed(2)}</p>
+              </div>
             </div>
             {expenses.map((expense, index) => (
               <Expense
