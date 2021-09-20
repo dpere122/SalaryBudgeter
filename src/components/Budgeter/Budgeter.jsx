@@ -124,16 +124,21 @@ function Budgeter() {
             {/* Expenses */}
             <div className="col">
               <h4>After Expenses</h4>
-              <p>Yearly Salary: {salary}</p>
-              <p>Monthly Salary: {(salary / 12).toFixed(2)}</p>
-              <p>Weekly Salary: {(salary / 52).toFixed(2)}</p>
+              <p>Yearly Salary: {salary - (totalExpenses * 12).toFixed(2)}</p>
+              <p>
+                Monthly Salary: {(salary / 12).toFixed(2) - totalExpenses.toFixed(2)}
+              </p>
+              <p>
+                Weekly Salary:{" "}
+                {(salary / 52).toFixed(2) - (totalExpenses / 52).toFixed(2)}
+              </p>
             </div>
           </div>
           <hr />
           <div>
             <div className="row">
               <div className="col">
-                <h2>Expenses:</h2>
+                <h3>Monthly Expenses:</h3>
               </div>
               <div className="col">
                 <p>{totalExpenses.toFixed(2)}</p>
